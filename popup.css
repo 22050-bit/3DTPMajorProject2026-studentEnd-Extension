@@ -1,0 +1,20 @@
+body{
+    width: 526px;
+    height: 530px;
+    margin: 0;    
+
+    /*background image bundle starts here*/
+    background-image: url('images/pinkSlipPhoto.jpg');
+    background-repeat: no-repeat; 
+    background-position: center; 
+    background-size: cover; 
+    background-attachment: fixed; 
+    /*background image bundle ends here*/
+
+}
+
+.Teacher {
+    position: absolute;
+    left: 156px;
+    top: 76px;
+}
