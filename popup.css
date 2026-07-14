@@ -13,8 +13,77 @@ body{
 
 }
 
-.Teacher {
+/* new home page for application page elements positioning and style starts here */
+/*universal classes*/
+.yesBox{
+    position: absolute;
+    color:white;
+    background-color: green;
+    height:30px;
+    width:50px;
+}
+
+.noBox{
+    position: absolute;
+    color: white;
+    background-color: red;
+    height:30px;
+    width:30px;
+}
+/*y coordinates*/
+.line1{
+    top:75px;
+}
+.line2{
+    top: 129px;
+}
+
+
+/*Line 1: teacher*/
+.enterTeacher {
     position: absolute;
     left: 156px;
-    top: 76px;
+    height: 30px;
+    width:100px;
 }
+
+.saveTeacher { 
+    left: 256px;
+}
+.cancelTeacher { 
+    left: 306px;
+}
+
+/*Line 2: student*/
+.enterStudent {
+    position: absolute;
+    left: 156px;    
+    width: 95px;
+    height: 25px;
+}
+
+.saveStudent { 
+    left: 256px;
+}
+.cancelStudent { 
+    left: 306px;
+}
+
+/*
+{ 
+    position: absolute;
+    left: px;
+    top: px;
+}
+{ 
+    position: absolute;
+    left: px;
+    top: px;
+}
+{ 
+    position: absolute;
+    left: px;
+    top: px;
+}
+*/
+/* new home page for application page elements positioning and style ends here */

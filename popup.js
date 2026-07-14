@@ -1,3 +1,4 @@
+//model code from the first page to reuse in the future
 fetch("https://script.google.com/macros/s/AKfycbxwPo-LNfj3aHkThOpFzQS7pRq_y9H69Ucp-1Chn553sGaybghbViVgkuCMrwmxYJb_qQ/exec")
     .then(gettingResponse);
 let theResponse = "";
@@ -53,3 +54,26 @@ function gettingResponse(response) {
 
 sheetData.onclick = test;
 //ends here
+//model code reusable ends here
+
+//code for misc styling of home application page starts here
+
+//reads the teachers there are and files them into the options of the dropdown box
+fetch("teacherNames.json")
+    .then(teacherInfo => teacherInfo.json())
+        .then(teachers => {
+            console.log (teachers);
+            const dropdownBox = document.getElementById("enterTeacher");
+
+            teachers.foreach(teacher=> {
+                const option = document.createElement("option");
+                option.value = "testing";
+                option.textContent = "testing";
+                dropdownBox.appendChild(option);
+            }
+
+            );
+        });
+
+//code for misc styling of home application page starts here
+
