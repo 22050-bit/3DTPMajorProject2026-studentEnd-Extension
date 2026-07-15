@@ -6,7 +6,6 @@
     <!--line 1:teacher-->
     <select id="enterTeacher" class = "enterTeacher line1">
         <option value="" selected hidden>Your Teacher:</option>
-        <option value="">Placeholder</option>
     </select>
     
     <button id="saveTeacher" class = "saveTeacher yesBox line1">Save</button>
@@ -16,6 +15,28 @@
     <input type="text" id="enterStudent" class="enterStudent line2" placeholder="Your name:">
     <button id="saveStudent" class = "saveStudent yesBox line2">Save</button>
     <button id="cancelStudent" class = "cancelStudent noBox line2">X</button>
+
+    <!--line 3: date and time left-->'
+    <input type="date" id="enterDate" class="enterDate">
+    <p id="enterTimeValue"class="line3 enterTimeValue">MAX 60 min, MIN 1 min:<br>null minutes</p>
+    <input type="range" id="enterTime" max="60" min="1" class="line3 enterTime">
+    
+    <!--line 4: radio options for which period-->
+    <input type="radio" id="RAPID" name="enterPeriod" value="RAPID" class="line4 RAPID">
+    <input type="radio" id="1" name="enterPeriod" value="1" class="line4 period1">
+    <input type="radio" id="2" name="enterPeriod" value="2" class="line4 period2">
+    <input type="radio" id="3" name="enterPeriod" value="3" class="line4 period3">
+    <input type="radio" id="4" name="enterPeriod" value="4" class="line4 period4">
+    <input type="radio" id="5" name="enterPeriod" value="5" class="line4 period5">
+
+    <!--line 5: reason-->
+    <textarea id="enterReason" class="enterReason line5" placeholder="Enter Reason"></textarea>
+    <button id="saveReason" class = "saveReason yesBox line5">Save</button>
+    <button id="cancelReason" class = "cancelReason noBox line5">X</button>
+
+    <!--line 6: submission-->
+    <button id="submission" class="yesBox line6 submit">Save all & submit</button>
+
 
 </body>
 <link rel="stylesheet" href="popup.css">

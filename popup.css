@@ -37,7 +37,18 @@ body{
 .line2{
     top: 129px;
 }
-
+.line3{
+    top:170px;
+}
+.line4{
+    top:290px;
+}
+.line5{
+    top:320px;
+}
+.line6{
+    top: 400px;
+}
 
 /*Line 1: teacher*/
 .enterTeacher {
@@ -68,6 +79,84 @@ body{
 .cancelStudent { 
     left: 306px;
 }
+
+/*Line 3: date and time left*/
+.enterDate{
+    position: absolute;
+    left: 55px;
+    top: 220px;
+}
+
+.enterTime{
+    position: absolute;
+    left: 330px;
+    top: 225px;
+}
+
+.enterTimeValue{
+    position: absolute;
+    left: 330px;
+    top:178px;
+
+    font-weight: bold;
+    color: black;
+}
+
+/*line 4: radio period*/
+
+.RAPID{
+    position: absolute;
+    left:222px;
+}
+.period1{
+    position: absolute;
+    left: 263px;
+
+}
+.period2{
+    position: absolute;
+    left: 304px;;
+}
+.period3{
+    position: absolute;
+    left: 345px;
+}
+.period4{
+    position: absolute;
+    left:386px;
+}
+.period5{
+    position: absolute;
+    left: 427px;
+}
+
+/*Line 5: enter reason*/
+.enterReason{
+    position: absolute;
+    left:150px;
+    width:160px;
+    height:48px;
+    resize: none;
+}
+.saveReason{
+    position: absolute;
+    left:320px;
+}
+.cancelReason{
+    position: absolute;
+    left: 370px;
+}
+
+
+/*Line 5: final submission button*/
+.submit{
+    position: absolute;
+    left: 200px;
+    width:200px;
+    height: 50px;
+    font-size: 16px;
+}
+
 
 /*
 { 
