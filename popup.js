@@ -66,6 +66,22 @@ function CancelTeacher(){
     saveTeacher.style.backgroundColor= "green";
 }
 cancelTeacher.onclick=CancelTeacher;
+//reads the teachers there are and files them into the options of the dropdown box
+fetch("teacherNames.json")
+    .then(teacherInfo => teacherInfo.json())
+        .then(teachers => {
+            
+            const dropdownBox = document.getElementById("enterTeacher");
+
+            teachers.forEach(teacher=> {
+                const option = document.createElement("option");
+                option.value = teacher[1];
+                option.textContent = teacher[0];
+                dropdownBox.appendChild(option);
+            }
+
+            );
+ });
 
 //LINE 2:
 //save the student names
@@ -149,22 +165,6 @@ const openOther= document.getElementById("openTheOther");
 
 //code for misc styling of home application page starts here
 
-//reads the teachers there are and files them into the options of the dropdown box
-fetch("teacherNames.json")
-    .then(teacherInfo => teacherInfo.json())
-        .then(teachers => {
-            
-            const dropdownBox = document.getElementById("enterTeacher");
-
-            teachers.forEach(teacher=> {
-                const option = document.createElement("option");
-                option.value = teacher[1];
-                option.textContent = teacher[0];
-                dropdownBox.appendChild(option);
-            }
-
-            );
- });
 
 
 
