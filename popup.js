@@ -6,24 +6,36 @@ const enterTeacher = document.getElementById("enterTeacher"); //the enter teache
 const saveTeacher = document.getElementById("saveTeacher"); //the green save button for teacher optin
 const cancelTeacher = document.getElementById("cancelTeacher"); //the red "X" button to reset the option
 
+var teacherEntered=false;
+
 //LINE 2 enter student
 const enterStudent = document.getElementById("enterStudent"); //the enter student name textbox, get value from here
 const saveStudent = document.getElementById("saveStudent"); //the green save button for student  optin
 const cancelStudent = document.getElementById("cancelStudent"); //the red "X" button to reset the option
 
+var studentEntered=false;
+
 //LINE 3 time and date
 const enterTimeValue = document.getElementById("enterTimeValue"); //the paragraph to show value
 const enterTime = document.getElementById("enterTime"); //the sliding input to assign time
 
+var timeEntered=false;
+
 const enterDate = document.getElementById("enterDate"); //the calander interface, get value here
 
+var dateEntered=false;
+
 //line 4 period number
-const enterPeriod = document.getElementsByTagName("enterPeriod"); 
+const enterPeriod = document.querySelectorAll('input[name="enterPeriod"]');
+
+var periodEntered=false;
 
 //line 5: reason
 const enterReason = document.getElementById("enterReason");
 const saveReason = document.getElementById("saveReason"); //the green save button for student  optin
 const cancelReason = document.getElementById("cancelReason"); //the red "X" button to reset the option
+
+var reasonEntered=false;
 
 //line 6 submission
 const submission =document.getElementById("submission"); //submitting button
@@ -33,7 +45,7 @@ var studentName;
 var teacher;
 var teacherEmail;
 var timeNeeded;
-var dateOfApplication;
+var dateForApplication;
 var periodOfLeave;
 var reasonOfLeave;
 
@@ -53,6 +65,8 @@ function SaveTeacher(){
     teacher=enterTeacher.options[enterTeacher.selectedIndex].text;  //set value
     console.log(teacher + " and "+teacherEmail) //debug testing
     saveTeacher.style.backgroundColor= "grey";
+
+    teacherEntered=true;
 }
 saveTeacher.onclick=SaveTeacher;
 
@@ -64,6 +78,8 @@ function CancelTeacher(){
     teacher=""; //wipe clean
     console.log(teacher + " and "+teacherEmail) //debug testing
     saveTeacher.style.backgroundColor= "green";
+
+    teacherEntered=false;
 }
 cancelTeacher.onclick=CancelTeacher;
 //reads the teachers there are and files them into the options of the dropdown box
@@ -91,6 +107,8 @@ function SaveStudent(){
     studentName=enterStudent.value; //set value 
     console.log(studentName) //debug testing
     saveStudent.style.backgroundColor= "grey";
+
+    studentEntered=true;
 }
 saveStudent.onclick=SaveStudent;
 
@@ -101,21 +119,37 @@ function CancelStudent(){
     studentName=""; //wipe clean
     console.log(studentName) //debug testing
     saveStudent.style.backgroundColor= "green";
+
+    studentEntered=false;
 }
 cancelStudent.onclick=CancelStudent;
 
 //LINE 3: date and time left
 //for the value shown to correspond with the slider
-function enterTimeChange() {
+function EnterTimeChange() {
     var time=enterTime.value;
     enterTimeValue.innerHTML = `MAX 60 min, MIN 1 min:<br> ${time} minutes`;
+
+    timeEntered=true;
 }
-enterTime.addEventListener("input", enterTimeChange);
+enterTime.addEventListener("input", EnterTimeChange); //changed? okay check that
 //FLEXIBLE ENTERING; WONT BE SET DEAD HERE
-//DATES; FLEXIBLE ENTERING, WONT BE SET DEAD HERE
+//DATES; FLEXIBLE ENTERING, WONT BE SET DEAD HERE, but needs a checker
+function DateEntered(){
+    dateEntered=true;
+}
+
+enterDate.addEventListener("input", DateEntered); //once changed, entered date, changed? check that
 
 //Line 4: period number
 //const periodOfLeave = document.querySelector('input[name="enterPeriod"]:checked')?.value;
+function PeriodEntered(){
+    periodEntered=true;
+}
+
+enterPeriod.forEach(radio => {
+    radio.addEventListener("change", PeriodEntered);
+});
 
 //Line 5: reason
 function SaveReason(){
@@ -124,6 +158,8 @@ function SaveReason(){
     reasonOfLeave=enterReason.value; //set value 
     console.log(reasonOfLeave) //debug testing
     saveReason.style.backgroundColor= "grey";
+
+    reasonEntered=true;
 }
 saveReason.onclick=SaveReason;
 
@@ -134,27 +170,69 @@ function CancelReason(){
     reasonOfLeave=""; //wipe clean
     console.log(reasonOfLeave) //debug testing
     saveReason.style.backgroundColor= "green";
+
+    reasonEntered=false;
 }
 cancelReason.onclick=CancelReason;
 
 //LINE 6: SUBMISSION BOIIIIIIS we made it
 function Submission(){
-    //flexible values are now assigned to variable
-    dateOfApplication=enterDate.value;
+    
+    if(studentEntered && teacherEntered && dateEntered && timeEntered && periodEntered && reasonEntered){
+    //flexible values are now assigned to variabl
+    dateForApplication=enterDate.value;
     timeNeeded= enterTime.value;
     periodOfLeave = document.querySelector('input[name="enterPeriod"]:checked')?.value; //period number
 
+    //default variables which must be added to the sheet
+    var timeOfApplication = new Date().toString();
+    var isApproved = false;
+
     //debug, testing allvariables are documented correctly. this will be the palce when they are posted
-    console.log(studentName+teacher+teacherEmail+timeNeeded+dateOfApplication+periodOfLeave+reasonOfLeave);
+    
+    InputtingData(teacher,teacherEmail,studentName,timeNeeded,dateForApplication,periodOfLeave,reasonOfLeave,timeOfApplication,isApproved);
 
     submission.style.backgroundColor= "grey";
     submission.disabled=true;
+    }
+
+    else{
+        alert('Please fill in all questions with valid answers and press "Save"');
+        console.log("the error message should show");
+    }
 }
 
 submission.onclick= Submission;
 
 
 //HOME PAGE JS ENDS HERE
+
+
+
+//TRANSMITTION CODE STARTS HERE
+
+function InputtingData(teachername, teacheremail, studentname, timeneeded, dateforapplication, periodofleave, reasonofleave, timeofapplication, isapproved){
+
+fetch("https://script.google.com/macros/s/AKfycbxKy5d_DRBqh9NwLQHSE21yPlDrWVfJrPJYbd97C585BP8qY3nPebJggKfwKoCFkICObg/exec", {
+    method: "POST",
+    body: JSON.stringify(
+        {
+            "teachername":teachername,
+            "teacheremail":teacheremail,
+            "studentname": studentname,
+            "timeneeded": timeneeded,
+            "dateforapplication":dateforapplication,
+            "periodofleave":periodofleave,
+            "reasonofleave":reasonofleave,
+            "timeofapplication":timeofapplication,
+            "isapproved":isapproved
+        }
+    )
+});
+}
+
+//TRANSMITTION CODE ENDS HERE
+
 
 
 const sheetInput = document.getElementById("testingInput");
@@ -184,14 +262,6 @@ function Open(){
 
 openOther.click = Open;
 
-let inputtedData = "";
-function InputtingData(input){
-
-fetch("https://script.google.com/macros/s/AKfycbxwPo-LNfj3aHkThOpFzQS7pRq_y9H69Ucp-1Chn553sGaybghbViVgkuCMrwmxYJb_qQ/exec", {
-    method: "POST",
-    body: JSON.stringify({"test":input})
-});
-}
 
 
 
