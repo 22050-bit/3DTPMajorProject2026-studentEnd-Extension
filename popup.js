@@ -1,3 +1,43 @@
+//FANCY FIREBASE FIRESTOR STUFF
+import { initializeApp } from "firebase/app";
+import {
+    collection,
+    doc,
+    getDoc,
+    getFirestore,
+    addDoc,
+    setDoc,
+    updateDoc,
+    deleteDoc
+} from "firebase/firestore";// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyAuEz3JIVLCKUV-_jlmRytldLJU5qnnFZM",
+  authDomain: "test-bdb0b.firebaseapp.com",
+  projectId: "test-bdb0b",
+  storageBucket: "test-bdb0b.firebasestorage.app",
+  messagingSenderId: "572350694455",
+  appId: "1:572350694455:web:c06d6dd4ce637bb8ab2bb2",
+  measurementId: "G-WV58WKDE5M"
+};
+
+const app = initializeApp(firebaseConfig); 
+const db = getFirestore(app); 
+
+//const testCollection = doc(db, "Applications/EJXrS24YU9RvSv3rlpfJ");
+
+//const docData = await getDoc(testCollection);
+
+//function testingFirebase(){
+  //  if (docData.exists()){
+       // console.log(docData.data());
+    //}
+   // else{
+        //console.log("too bad");
+    //}
+//}
+//FANCY FIREBASE ENDS HERE
+
 //LIBRARY OF CALLS TO GET THE ELEMENTS ON HTML TO JS
 
 //HOMEPAGE CONSTS STARTS HERE
@@ -12,6 +52,7 @@ var teacherEntered=false;
 const enterStudent = document.getElementById("enterStudent"); //the enter student name textbox, get value from here
 const saveStudent = document.getElementById("saveStudent"); //the green save button for student  optin
 const cancelStudent = document.getElementById("cancelStudent"); //the red "X" button to reset the option
+const showStudent = document.getElementById("showStudent"); //the thing to double check if they have chosen themselves/entered the right ID
 
 var studentEntered=false;
 
@@ -41,6 +82,7 @@ var reasonEntered=false;
 const submission =document.getElementById("submission"); //submitting button
 
 //STORAGE:
+var studentID;
 var studentName;
 var teacher;
 var teacherEmail;
@@ -59,14 +101,22 @@ var reasonOfLeave;
 //LINE 1:
 //save the teacher
 function SaveTeacher(){
-    enterTeacher.disabled=true; //no more changing choice
-    saveTeacher.disabled=true; //no more saving, this is already saved
     teacherEmail=enterTeacher.value; //set value 
     teacher=enterTeacher.options[enterTeacher.selectedIndex].text;  //set value
+    
+    if(teacherEmail=="invalid"){
+        alert("Error: Please choose a valid teacher to request permission");
+        teacherEntered=false;
+    }
+    else{
+    enterTeacher.disabled=true; //no more changing choice
+    saveTeacher.disabled=true; //no more saving, this is already saved
+   
     console.log(teacher + " and "+teacherEmail) //debug testing
     saveTeacher.style.backgroundColor= "grey";
 
     teacherEntered=true;
+    }
 }
 saveTeacher.onclick=SaveTeacher;
 
@@ -101,25 +151,58 @@ fetch("teacherNames.json")
 
 //LINE 2:
 //save the student names
+
 function SaveStudent(){
+    studentID=enterStudent.value; //set value 
+    console.log(studentID) //debug testing
+    if(studentID == ""){
+        alert("Error: You need to fill in your student ID");
+        studentEntered=false;
+    }
+    else if (isNaN(Number(studentID))){
+        alert("Error: Please enter a valid Student ID");
+        studentEntered=false;
+    }
+    else{
+    var studentIsFound = false;
+    fetch("studentNames.json")
+    .then(studentInfo => studentInfo.json())
+        .then(students => students.forEach(student =>{ 
+            console.log(student[0]);
+            console.log(student[1]);
+            if(student[1] == Number(studentID)){
+                showStudent.value = student[0];
+                studentIsFound = true;
+                studentName =student[0];
+            }
+            }
+        )
+    );
+    if (studentIsFound == false){
+        showStudent.value = "Not Found";
+    }
+
     enterStudent.disabled=true; //no more changing choice
     saveStudent.disabled=true; //no more saving, this is already saved
-    studentName=enterStudent.value; //set value 
-    console.log(studentName) //debug testing
     saveStudent.style.backgroundColor= "grey";
-
     studentEntered=true;
+
+    }
+    
+
 }
+
 saveStudent.onclick=SaveStudent;
 
 //cancel the input
 function CancelStudent(){
     enterStudent.disabled=false; //no more changing choice
     saveStudent.disabled=false; //no more saving, this is already saved
-    studentName=""; //wipe clean
-    console.log(studentName) //debug testing
+    studentID=""; //wipe clean
+    console.log(studentID) //debug testing
     saveStudent.style.backgroundColor= "green";
 
+    showStudent.value = "Name to ID";
     studentEntered=false;
 }
 cancelStudent.onclick=CancelStudent;
@@ -153,13 +236,21 @@ enterPeriod.forEach(radio => {
 
 //Line 5: reason
 function SaveReason(){
-    enterReason.disabled=true; //no more changing choice
-    saveReason.disabled=true; //no more saving, this is already saved
     reasonOfLeave=enterReason.value; //set value 
     console.log(reasonOfLeave) //debug testing
+    
+    if(reasonOfLeave==""){
+        alert("Error: Please enter a valid reason");
+        reasonEntered=false;
+    }
+    else{
+    enterReason.disabled=true; //no more changing choice
+    saveReason.disabled=true; //no more saving, this is already saved
+    
     saveReason.style.backgroundColor= "grey";
 
     reasonEntered=true;
+    }
 }
 saveReason.onclick=SaveReason;
 
@@ -176,7 +267,7 @@ function CancelReason(){
 cancelReason.onclick=CancelReason;
 
 //LINE 6: SUBMISSION BOIIIIIIS we made it
-function Submission(){
+async function Submission(){
     
     if(studentEntered && teacherEntered && dateEntered && timeEntered && periodEntered && reasonEntered){
     //flexible values are now assigned to variabl
@@ -185,12 +276,17 @@ function Submission(){
     periodOfLeave = document.querySelector('input[name="enterPeriod"]:checked')?.value; //period number
 
     //default variables which must be added to the sheet
-    var timeOfApplication = new Date().toString();
+    const now=new Date();
+    var timeOfApplication = now.toLocaleTimeString("en-GB", {
+    timeZone: "Pacific/Auckland",
+    hour12: false
+    });;
+
     var isApproved = false;
 
     //debug, testing allvariables are documented correctly. this will be the palce when they are posted
     
-    InputtingData(teacher,teacherEmail,studentName,timeNeeded,dateForApplication,periodOfLeave,reasonOfLeave,timeOfApplication,isApproved);
+    await InputtingData(teacher,teacherEmail,studentID, studentName, timeNeeded,dateForApplication,periodOfLeave,reasonOfLeave,timeOfApplication,isApproved);
 
     submission.style.backgroundColor= "grey";
     submission.disabled=true;
@@ -204,100 +300,27 @@ function Submission(){
 
 submission.onclick= Submission;
 
-
 //HOME PAGE JS ENDS HERE
 
-
+var documentName;
 
 //TRANSMITTION CODE STARTS HERE
 
-function InputtingData(teachername, teacheremail, studentname, timeneeded, dateforapplication, periodofleave, reasonofleave, timeofapplication, isapproved){
+async function InputtingData(teachername, teacheremail, studentid, studentname, timeneeded, dateforapplication, periodofleave, reasonofleave, timeofapplication, isapproved){
 
-fetch("https://script.google.com/macros/s/AKfycbxKy5d_DRBqh9NwLQHSE21yPlDrWVfJrPJYbd97C585BP8qY3nPebJggKfwKoCFkICObg/exec", {
-    method: "POST",
-    body: JSON.stringify(
-        {
-            "teachername":teachername,
-            "teacheremail":teacheremail,
-            "studentname": studentname,
-            "timeneeded": timeneeded,
-            "dateforapplication":dateforapplication,
-            "periodofleave":periodofleave,
-            "reasonofleave":reasonofleave,
-            "timeofapplication":timeofapplication,
-            "isapproved":isapproved
-        }
-    )
-});
-}
-
-//TRANSMITTION CODE ENDS HERE
-
-
-
-const sheetInput = document.getElementById("testingInput");
-const sheetData = document.getElementById ("testingButton");
-const sheetSend = document.getElementById("testingOutput");
-const symptoms= document.getElementById("wahhh");
-const openOther= document.getElementById("openTheOther");
-
-//code for misc styling of home application page starts here
-
-
-
-
-
-
-
-//ends here
-
-//model code from the first page to reuse in the future
-fetch("https://script.google.com/macros/s/AKfycbxwPo-LNfj3aHkThOpFzQS7pRq_y9H69Ucp-1Chn553sGaybghbViVgkuCMrwmxYJb_qQ/exec")
-    .then(gettingResponse);
-let theResponse = "";
-
-function Open(){
-    window.location.href = "newHome.html";
-}
-
-openOther.click = Open;
-
-
-
-
-
-function confirmData(){
-    inputtedData=String(sheetInput.value);
-    console.log(inputtedData);
-    InputtingData(inputtedData);
-}
-sheetSend.onclick = confirmData;
-//Code related to the visual stuff starts here
-
-function test() {
-    symptoms.textContent = theResponse;
-}
-
-function gettingResponse(response) {
-
-    console.log("The server replied!");
-
-    response.text().then(function(text) {
-
-        console.log("The text is:", text);
-
-        theResponse = text;
-
-    });
+        documentName = studentID+ "-" + dateforapplication + "-" + timeofapplication;
+        await setDoc(doc(db, "Applications",documentName),{
+            teacherName:teachername,
+            teacherEmail:teacheremail,
+            studentName: studentname,
+            studentID: studentid,
+            timeNeeded: timeneeded,
+            dateForApplication:dateforapplication,
+            periodOfLeave:periodofleave,
+            reasonOfLeave:reasonofleave,
+            timeOfApplication:timeofapplication,
+            isApproved:isapproved
+        });
+    
 
 }
-
-sheetData.onclick = test;
-//ends here
-//model code reusable ends here
-
-
-
-
-
-

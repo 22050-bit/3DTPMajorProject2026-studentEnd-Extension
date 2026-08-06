@@ -55,29 +55,36 @@ body{
     position: absolute;
     left: 156px;
     height: 30px;
-    width:100px;
+    width:110px;
 }
 
 .saveTeacher { 
-    left: 256px;
+    left: 265px;
 }
 .cancelTeacher { 
-    left: 306px;
+    left: 315px;
 }
 
 /*Line 2: student*/
 .enterStudent {
     position: absolute;
     left: 156px;    
-    width: 95px;
+    width: 105px;
+    height: 25px;
+}
+
+.showStudent{
+    position: absolute;
+    left:355px;
+    width: 100px;
     height: 25px;
 }
 
 .saveStudent { 
-    left: 256px;
+    left: 265px;
 }
 .cancelStudent { 
-    left: 306px;
+    left: 315px;
 }
 
 /*Line 3: date and time left*/

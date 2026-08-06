@@ -17,7 +17,7 @@
         "32": "images/icon#1.png" 
         }, 
       "default_title": "Yeah" ,
-      "default_popup": "newHome.html"
+      "default_popup": "index.html"
     } 
 
 }
