@@ -1,6 +1,9 @@
 # 3DTPMajorProject2026
 Pink Slip program! Chrome extension mainly, but can also act as a website (through using the main index html file(may be different name))
 
+<img width="832" height="652" alt="image" src="https://github.com/user-attachments/assets/a9d34893-d8ac-4ddb-b47d-b5c535d151d1" />
+
+
 When entering into the program, you'll be able to see an UI which is exactly the same as the paper pink slips we use currently. Then, there would be boxes and dropdown things for the user to fill in. 
 Once the details of the leave pass during classtime has been filled in, it will be confirmed, sent to an google sheet through App data.
 The teachers will need what is basically an entirely different app. Each of their program will be constantly scanning for the new requests of class leaves on the spreadsheet, with knowledge of the teacher
