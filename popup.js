@@ -28,15 +28,6 @@ const db = getFirestore(app);
 
 //const docData = await getDoc(testCollection);
 
-//function testingFirebase(){
-  //  if (docData.exists()){
-       // console.log(docData.data());
-    //}
-   // else{
-        //console.log("too bad");
-    //}
-//}
-//FANCY FIREBASE ENDS HERE
 
 //LIBRARY OF CALLS TO GET THE ELEMENTS ON HTML TO JS
 
@@ -218,11 +209,21 @@ function EnterTimeChange() {
 enterTime.addEventListener("input", EnterTimeChange); //changed? okay check that
 //FLEXIBLE ENTERING; WONT BE SET DEAD HERE
 //DATES; FLEXIBLE ENTERING, WONT BE SET DEAD HERE, but needs a checker
-function DateEntered(){
-    dateEntered=true;
-}
 
-enterDate.addEventListener("input", DateEntered); //once changed, entered date, changed? check that
+function DateEntered(){
+    const now=new Date();
+    const dateString =
+    `${now.getFullYear()}-${
+        String(now.getMonth() + 1).padStart(2, "0")
+    }-${
+        String(now.getDate()).padStart(2, "0")
+    }`;
+
+    enterDate.value = dateString;
+    dateEntered = true;
+
+}
+document.addEventListener("DOMContentLoaded",DateEntered); //once changed, entered date, changed? check that
 
 //Line 4: period number
 //const periodOfLeave = document.querySelector('input[name="enterPeriod"]:checked')?.value;

@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Pink Slip",
-  "version": "0.1.7",
+  "version": "0.2.4",
   
   
   "icons": { 
@@ -16,7 +16,7 @@
         "24": "images/icon#1.png", 
         "32": "images/icon#1.png" 
         }, 
-      "default_title": "Yeah" ,
+      "default_title": "Pink Slip for students!!!" ,
       "default_popup": "index.html"
     } 
 
