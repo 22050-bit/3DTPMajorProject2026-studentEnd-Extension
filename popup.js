@@ -40,6 +40,7 @@ const saveTeacher = document.getElementById("saveTeacher"); //the green save but
 const cancelTeacher = document.getElementById("cancelTeacher"); //the red "X" button to reset the option
 const searchTeacher = document.getElementById("searchTeacher"); //the searching bar to find the wanted teacher
 
+var teacherInputLocked = false;
 var teacherEntered=false;
 
 //LINE 2 enter student
@@ -101,7 +102,7 @@ var reasonOfLeave;
 function SaveTeacher(){
     teacherEmail=enterTeacher.value; //set value 
     teacher=enterTeacher.options[enterTeacher.selectedIndex].text;  //set value
-    
+    teacherInputLocked = true;
     if(teacherEmail=="invalid"){
         alert("Error: Please choose a valid teacher to request permission");
         teacherEntered=false;
@@ -122,6 +123,9 @@ saveTeacher.onclick=SaveTeacher;
 function CancelTeacher(){
     enterTeacher.disabled=false; //no more changing choice
     saveTeacher.disabled=false; //no more saving, this is already saved
+
+    teacherInputLocked = false;
+
     teacherEmail=""; //wipe clean
     teacher=""; //wipe clean
     console.log(teacher + " and "+teacherEmail) //debug testing
@@ -148,24 +152,26 @@ fetch("teacherNames.json")
  });
 
 function SearchTeacher(){
-    let searchText = searchTeacher.value.toLowerCase(); //the text the user searches up
+    if (teacherInputLocked == false){
+        let searchText = searchTeacher.value.toLowerCase(); //the text the user searches up
     
-    let matchFound = false;
+        let matchFound = false;
 
-    for (const option of enterTeacher.options) {
-        if (option.value == "invalid"){
-            option.hidden = true;
-        }
-        else if (!option.text.toLowerCase().includes(searchText)){
-            option.hidden = true ; //hide the options which aren't relevent
-        }
-        else if (option.text.toLowerCase().includes(searchText)){
-            option.hidden = false ; //show the options which are
-            if (!matchFound){
-                enterTeacher.value = option.value;
-                matchFound = true;
+        for (const option of enterTeacher.options) {
+            if (option.value == "invalid"){
+                option.hidden = true;
             }
-        }
+            else if (!option.text.toLowerCase().includes(searchText)){
+                option.hidden = true ; //hide the options which aren't relevent
+            }
+            else if (option.text.toLowerCase().includes(searchText)){
+                option.hidden = false ; //show the options which are
+                if (!matchFound){
+                    enterTeacher.value = option.value;
+                    matchFound = true;
+                }
+            }
+        }   
     }
   
 }
