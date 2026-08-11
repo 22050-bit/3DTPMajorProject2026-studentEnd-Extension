@@ -41,10 +41,13 @@ body{
     top:170px;
 }
 .line4{
-    top:290px;
+    top:265px;
 }
 .line5{
     top:320px;
+}
+.line5-5{
+    top: 350px;
 }
 .line6{
     top: 400px;
@@ -56,6 +59,13 @@ body{
     left: 156px;
     height: 30px;
     width:110px;
+}
+
+.searchTeacher{
+    position: absolute;
+    left:355px;
+    width: 100px;
+    height: 25px;
 }
 
 .saveTeacher { 
@@ -109,32 +119,12 @@ body{
     color: black;
 }
 
-/*line 4: radio period*/
-
-.RAPID{
-    position: absolute;
-    left:222px;
-}
-.period1{
-    position: absolute;
-    left: 263px;
-
-}
-.period2{
-    position: absolute;
-    left: 304px;;
-}
-.period3{
-    position: absolute;
-    left: 345px;
-}
-.period4{
-    position: absolute;
-    left:386px;
-}
-.period5{
-    position: absolute;
-    left: 427px;
+/*line 4: enter period*/
+.enterPeriod{
+    position:absolute;
+    left:250px;
+    width:100px;
+    height:25px;
 }
 
 /*Line 5: enter reason*/
@@ -142,18 +132,30 @@ body{
     position: absolute;
     left:150px;
     width:160px;
-    height:48px;
+    height:24px;
     resize: none;
+
+    visibility: hidden;
 }
 .saveReason{
     position: absolute;
     left:320px;
+
+    visibility: hidden;
 }
 .cancelReason{
     position: absolute;
     left: 370px;
+
+    visibility: hidden;
 }
 
+.chooseReasons{
+    position:absolute;
+    left: 150px;
+    width:165px;
+    height:30px;
+}
 
 /*Line 6: final submission button*/
 .submit{

@@ -7,7 +7,7 @@
     <select id="enterTeacher" class = "enterTeacher line1">
         <option value="invalid" selected hidden>Your Teacher:</option>
     </select>
-    
+    <input type = "text" id = "searchTeacher" class = "line1 searchTeacher" placeholder="Search Teacher:">
     <button id="saveTeacher" class = "saveTeacher yesBox line1">Save</button>
     <button id="cancelTeacher" class = "cancelTeacher noBox line1">X</button>
 
@@ -19,21 +19,24 @@
 
     <!--line 3: date and time left-->'
     <input type="date" id="enterDate" class="enterDate" disabled>
-    <p id="enterTimeValue"class="line3 enterTimeValue">MAX 60 min, MIN 1 min:<br>null minutes</p>
-    <input type="range" id="enterTime" max="60" min="1" class="line3 enterTime">
+    <p id="enterTimeValue"class="line3 enterTimeValue">MAX 15 min, MIN 1 min:<br>5 minutes</p>
+    <input type="range" id="enterTime" max="15" min="1" class="line3 enterTime" value = "5">
     
     <!--line 4: radio options for which period-->
-    <input type="radio" id="RAPID" name="enterPeriod" value="RAPID" class="line4 RAPID">
-    <input type="radio" id="1" name="enterPeriod" value="1" class="line4 period1">
-    <input type="radio" id="2" name="enterPeriod" value="2" class="line4 period2">
-    <input type="radio" id="3" name="enterPeriod" value="3" class="line4 period3">
-    <input type="radio" id="4" name="enterPeriod" value="4" class="line4 period4">
-    <input type="radio" id="5" name="enterPeriod" value="5" class="line4 period5">
+    <input type="text" id="enterPeriod" class="line4 enterPeriod" disabled>
 
     <!--line 5: reason-->
-    <textarea id="enterReason" class="enterReason line5" placeholder="Enter Reason"></textarea>
-    <button id="saveReason" class = "saveReason yesBox line5">Save</button>
-    <button id="cancelReason" class = "cancelReason noBox line5">X</button>
+    <select id="chooseReasons" class = "chooseReasons line5">
+        <option value="INVALID" selected hidden>Choose Reason:</option>
+        <option value = "Bathroom">Bathroom</option>
+        <option value = "Library Pickup">Library Pickup</option>
+        <option value = "Grab Water">Grab Water</option>
+        <option value = "Teacher's Task">Teacher's Task</option>
+        <option value = "Other">Other</option>
+    </select>
+    <textarea id="enterReason" class="enterReason line5-5" placeholder="Enter Reason"></textarea>
+    <button id="saveReason" class = "saveReason yesBox line5-5">Save</button>
+    <button id="cancelReason" class = "cancelReason noBox line5-5">X</button>
 
     <!--line 6: submission-->
     <button id="submission" class="yesBox line6 submit">Save all & submit</button>

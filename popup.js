@@ -24,6 +24,8 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig); 
 const db = getFirestore(app); 
 
+let perMinuteRefresh = setInterval(UpdatePeriodNumber, 30000);
+
 //const testCollection = doc(db, "Applications/EJXrS24YU9RvSv3rlpfJ");
 
 //const docData = await getDoc(testCollection);
@@ -36,6 +38,7 @@ const db = getFirestore(app);
 const enterTeacher = document.getElementById("enterTeacher"); //the enter teacher dropdown box, get value from here
 const saveTeacher = document.getElementById("saveTeacher"); //the green save button for teacher optin
 const cancelTeacher = document.getElementById("cancelTeacher"); //the red "X" button to reset the option
+const searchTeacher = document.getElementById("searchTeacher"); //the searching bar to find the wanted teacher
 
 var teacherEntered=false;
 
@@ -58,16 +61,20 @@ const enterDate = document.getElementById("enterDate"); //the calander interface
 var dateEntered=false;
 
 //line 4 period number
-const enterPeriod = document.querySelectorAll('input[name="enterPeriod"]');
+const enterPeriod = document.getElementById("enterPeriod");
 
 var periodEntered=false;
 
 //line 5: reason
+
+const chooseReasons = document.getElementById("chooseReasons"); 
+
 const enterReason = document.getElementById("enterReason");
 const saveReason = document.getElementById("saveReason"); //the green save button for student  optin
 const cancelReason = document.getElementById("cancelReason"); //the red "X" button to reset the option
 
 var reasonEntered=false;
+var reasonIsOther = false;
 
 //line 6 submission
 const submission =document.getElementById("submission"); //submitting button
@@ -140,6 +147,31 @@ fetch("teacherNames.json")
             );
  });
 
+function SearchTeacher(){
+    let searchText = searchTeacher.value.toLowerCase(); //the text the user searches up
+    
+    let matchFound = false;
+
+    for (const option of enterTeacher.options) {
+        if (option.value == "invalid"){
+            option.hidden = true;
+        }
+        else if (!option.text.toLowerCase().includes(searchText)){
+            option.hidden = true ; //hide the options which aren't relevent
+        }
+        else if (option.text.toLowerCase().includes(searchText)){
+            option.hidden = false ; //show the options which are
+            if (!matchFound){
+                enterTeacher.value = option.value;
+                matchFound = true;
+            }
+        }
+    }
+  
+}
+
+searchTeacher.oninput = SearchTeacher;
+
 //LINE 2:
 //save the student names
 
@@ -202,7 +234,7 @@ cancelStudent.onclick=CancelStudent;
 //for the value shown to correspond with the slider
 function EnterTimeChange() {
     var time=enterTime.value;
-    enterTimeValue.innerHTML = `MAX 60 min, MIN 1 min:<br> ${time} minutes`;
+    enterTimeValue.innerHTML = `MAX 15 min, MIN 1 min:<br> ${time} minutes`;
 
     timeEntered=true;
 }
@@ -223,46 +255,194 @@ function DateEntered(){
     dateEntered = true;
 
 }
-document.addEventListener("DOMContentLoaded",DateEntered); //once changed, entered date, changed? check that
+document.addEventListener("DOMContentLoaded",DateEntered); //shown period updates 
 
 //Line 4: period number
 //const periodOfLeave = document.querySelector('input[name="enterPeriod"]:checked')?.value;
 function PeriodEntered(){
     periodEntered=true;
+    UpdatePeriodNumber();
+
+    switch(enterPeriod.value){
+        case "RAPID":
+            periodOfLeave = "RAPID";
+        break;
+
+        case "Period 1":
+            periodOfLeave = "1";
+        break;
+        
+        case "Period 2":
+            periodOfLeave = "2";
+        break;
+
+        case "Period 3":
+            periodOfLeave = "3";
+        break;
+
+        case "Period 4":
+            periodOfLeave = "4";
+        break;
+
+        case "Period 5":
+            periodOfLeave = "5";
+        break;
+
+        default:
+            periodOfLeave = "Null";
+        break;
+    }
+    
+    console.log (periodOfLeave);
+    
 }
 
-enterPeriod.forEach(radio => {
-    radio.addEventListener("change", PeriodEntered);
-});
+window.addEventListener("DOMContentLoaded",PeriodEntered);
+
+function UpdatePeriodNumber(){
+    const now = new Date();
+    const currentHour = now.getHours(); //hours of the day
+    const currentMinutes = now.getMinutes(); //the exact minutes of those hours
+
+    const totalMinutes = (currentHour * 60) + currentMinutes;
+
+    const rapidStarts = (8 * 60) + 45; //8:45
+    const rapidEnds = 9*60; //9:00
+
+    const p1Starts = rapidEnds; //9:00
+    const p1Ends = 10*60; //10:00
+
+    const p2Starts = p1Ends; //10:00
+    const p2Ends = 11*60; //11:00
+
+    const intervalStarts = p2Ends; //11:00
+    const intervalEnds = p2Ends +30; //11:30
+
+    const p3Starts = intervalEnds; //11:30
+    const p3Ends = (12*60) + 30; //12:30
+
+    const p4Starts = p3Ends; //12:30
+    const p4Ends = (13*60) + 30; //1:30
+
+    const lunchStarts = p4Ends; //1:30
+    const lunchEnds = (14 * 60) + 20; //2:20
+
+    const p5Starts = lunchEnds; //2:20
+    const p5Ends = (15 * 60) + 20;  //3:20
+
+    if(totalMinutes >= rapidStarts && totalMinutes <= rapidEnds){ //rapid time
+        enterPeriod.value = "RAPID";
+        console.log("RAPID");
+    }
+    else if (totalMinutes >= p1Starts && totalMinutes <= p1Ends){ //period 1
+        enterPeriod.value = "Period 1";
+        console.log("P1");
+    }
+    else if (totalMinutes >= p2Starts && totalMinutes <= p2Ends){ //period 2
+        enterPeriod.value = "Period 2";
+        console.log("P2");
+    }
+    else if (totalMinutes >= intervalStarts && totalMinutes <= intervalEnds){ //interval
+        enterPeriod.value = "Interval";
+        console.log("Interval");
+    }
+    else if (totalMinutes >= p3Starts && totalMinutes <= p3Ends){ //period 3
+        enterPeriod.value = "Period 3";
+        console.log("P3");
+    }
+    else if (totalMinutes >= p4Starts && totalMinutes <= p4Ends){ //period 4
+        enterPeriod.value = "Period 4";
+        console.log("P4");
+    }
+    else if (totalMinutes >= lunchStarts && totalMinutes <= lunchEnds){ //lunch
+        enterPeriod.value = "Lunch";
+        console.log("lunch");
+    }
+    else if (totalMinutes >= p5Starts && totalMinutes <= p5Ends){ //period 5
+       enterPeriod.value = "Period 5";
+       console.log("P5");
+    }
+   
+    else{ //put placeholder text
+        enterPeriod.value = "School Closed";
+    }
+
+}
+
 
 //Line 5: reason
-function SaveReason(){
-    reasonOfLeave=enterReason.value; //set value 
-    console.log(reasonOfLeave) //debug testing
-    
-    if(reasonOfLeave==""){
-        alert("Error: Please enter a valid reason");
-        reasonEntered=false;
-    }
-    else{
-    enterReason.disabled=true; //no more changing choice
-    saveReason.disabled=true; //no more saving, this is already saved
-    
-    saveReason.style.backgroundColor= "grey";
+function GenericReasonChosen(){
+    if (chooseReasons.value == "Other"){
+        reasonIsOther = true;
 
-    reasonEntered=true;
+        enterReason.style.visibility = "visible";
+        saveReason.style.visibility = "visible";
+        cancelReason.style.visibility = "visible";
+
+        reasonEntered = false;
+    }
+
+    else if (chooseReasons.value == "INVALID"){
+        reasonIsOther = false;
+
+        reasonEntered = false;
+
+        enterReason.style.visibility = "hidden";
+        saveReason.style.visibility = "hidden";
+        cancelReason.style.visibility = "hidden";
+    }
+
+    else {
+        reasonIsOther = false;
+        reasonOfLeave = chooseReasons.value;
+
+        enterReason.style.visibility = "hidden";
+        saveReason.style.visibility = "hidden";
+        cancelReason.style.visibility = "hidden";
+
+        console.log(reasonOfLeave);
+        reasonEntered = true;
     }
 }
+
+chooseReasons.oninput = GenericReasonChosen;
+
+
+function SaveReason(){
+    if (reasonIsOther == true){
+    
+        reasonOfLeave=enterReason.value; //set value 
+        console.log(reasonOfLeave); //debug testing
+    
+        if(reasonOfLeave==""){ //even after setting value, if the user has entered nothing, fire a warning
+            alert("Error: Please enter a valid reason");
+            reasonEntered=false;
+        }
+
+        else{ //the user has properly entered something, so just make the UI and checks align with those results.
+
+            enterReason.disabled=true; //no more changing choice
+            saveReason.disabled=true; //no more saving, this is already saved
+    
+            saveReason.style.backgroundColor= "grey";
+
+            reasonEntered=true;
+        }
+    }
+}
+
 saveReason.onclick=SaveReason;
 
 //cancel the input
 function CancelReason(){
-    enterReason.disabled=false; //no more changing choice
-    saveReason.disabled=false; //no more saving, this is already saved
-    reasonOfLeave=""; //wipe clean
-    console.log(reasonOfLeave) //debug testing
-    saveReason.style.backgroundColor= "green";
 
+    if (reasonIsOther == true) {
+        enterReason.disabled=false; //no more changing choice
+        saveReason.disabled=false; //no more saving, this is already saved
+        reasonOfLeave=""; //wipe clean
+        console.log(reasonOfLeave) //debug testing
+        saveReason.style.backgroundColor= "green";
+    }
     reasonEntered=false;
 }
 cancelReason.onclick=CancelReason;
@@ -274,7 +454,6 @@ async function Submission(){
     //flexible values are now assigned to variabl
     dateForApplication=enterDate.value;
     timeNeeded= enterTime.value;
-    periodOfLeave = document.querySelector('input[name="enterPeriod"]:checked')?.value; //period number
 
     //default variables which must be added to the sheet
     const now=new Date();
