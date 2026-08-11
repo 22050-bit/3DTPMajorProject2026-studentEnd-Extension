@@ -55,7 +55,7 @@ var studentEntered=false;
 const enterTimeValue = document.getElementById("enterTimeValue"); //the paragraph to show value
 const enterTime = document.getElementById("enterTime"); //the sliding input to assign time
 
-var timeEntered=false;
+var timeEntered=true;
 
 const enterDate = document.getElementById("enterDate"); //the calander interface, get value here
 
