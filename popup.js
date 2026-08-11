@@ -505,7 +505,8 @@ async function InputtingData(teachername, teacheremail, studentid, studentname, 
             periodOfLeave:periodofleave,
             reasonOfLeave:reasonofleave,
             timeOfApplication:timeofapplication,
-            isApproved:isapproved
+            isApproved:isapproved,
+            reasonOfDecision: "None"
         });
     
 
