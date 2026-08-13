@@ -1,8 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Pink Slip",
-  "version": "0.2.5",
-  
+  "version": "0.2.7",
   
   "icons": { 
     "16": "images/icon#1.png", 
@@ -10,6 +9,7 @@
     "48": "images/icon#1.png", 
     "128": "images/icon#1.png" 
     }, 
+
     "action": { 
       "default_icon": { 
         "16": "images/icon#1.png", 

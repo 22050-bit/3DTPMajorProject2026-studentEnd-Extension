@@ -54,63 +54,63 @@ body{
 }
 
 /*Line 1: teacher*/
-.enterTeacher {
+.enterTeacher { /*the select box for choosing the teacher*/
     position: absolute;
     left: 156px;
     height: 30px;
     width:110px;
 }
 
-.searchTeacher{
+.searchTeacher{ /*the texbox where it searches for the close match to what is entered in here to what is in select element*/
     position: absolute;
     left:355px;
     width: 100px;
     height: 25px;
 }
 
-.saveTeacher { 
+.saveTeacher {  /*green button for saving the choice of teacher*/
     left: 265px;
 }
-.cancelTeacher { 
+.cancelTeacher { /*red cross button for cancelling the choice of teachers*/
     left: 315px;
 }
 
 /*Line 2: student*/
-.enterStudent {
+.enterStudent {   /*textbox where student ID is entered*/
     position: absolute;
     left: 156px;    
     width: 105px;
     height: 25px;
 }
 
-.showStudent{
+.showStudent{ /*the disabled texbox where the name of the student is shown according to the student ID entered*/
     position: absolute;
     left:355px;
     width: 100px;
     height: 25px;
 }
 
-.saveStudent { 
+.saveStudent { /*saving the student ID*/
     left: 265px;
 }
-.cancelStudent { 
+.cancelStudent { /*cancelling the student id save*/
     left: 315px;
 }
 
 /*Line 3: date and time left*/
-.enterDate{
+.enterDate{  /*the date box*/
     position: absolute;
     left: 55px;
     top: 220px;
 }
 
-.enterTime{
+.enterTime{ /*the range input thing for how long the student leaves class*/
     position: absolute;
     left: 330px;
     top: 225px;
 }
 
-.enterTimeValue{
+.enterTimeValue{ /*the text which shows the value of the range as it changes*/
     position: absolute;
     left: 330px;
     top:178px;
@@ -120,7 +120,7 @@ body{
 }
 
 /*line 4: enter period*/
-.enterPeriod{
+.enterPeriod{  /*the period of leave textbox which is automatically assigned*/
     position:absolute;
     left:250px;
     width:100px;
@@ -128,7 +128,7 @@ body{
 }
 
 /*Line 5: enter reason*/
-.enterReason{
+.enterReason{ /*the textbox which shows up when "other" is chosen as reason*/
     position: absolute;
     left:150px;
     width:160px;
@@ -137,20 +137,20 @@ body{
 
     visibility: hidden;
 }
-.saveReason{
+.saveReason{  /*comes with the other reason textbox for saving*/
     position: absolute;
     left:320px;
 
     visibility: hidden;
 }
-.cancelReason{
+.cancelReason{ /*comes with the other reason textbox for cancelling*/
     position: absolute;
     left: 370px;
 
     visibility: hidden;
 }
 
-.chooseReasons{
+.chooseReasons{ /*the select element for choosing generic reasons*/
     position:absolute;
     left: 150px;
     width:165px;
@@ -158,30 +158,10 @@ body{
 }
 
 /*Line 6: final submission button*/
-.submit{
+.submit{ 
     position: absolute;
     left: 200px;
     width:200px;
     height: 50px;
     font-size: 16px;
 }
-
-
-/*
-{ 
-    position: absolute;
-    left: px;
-    top: px;
-}
-{ 
-    position: absolute;
-    left: px;
-    top: px;
-}
-{ 
-    position: absolute;
-    left: px;
-    top: px;
-}
-*/
-/* new home page for application page elements positioning and style ends here */
