@@ -53,22 +53,22 @@ const saveStudent = document.getElementById("saveStudent"); //the green save but
 const cancelStudent = document.getElementById("cancelStudent"); //the red "X" button to reset the option
 const showStudent = document.getElementById("showStudent"); //the thing to double check if they have chosen themselves/entered the right ID
 
-var studentEntered=false; //checking if the student question has been entered
+var studentEntered = false; //checking if the student question has been entered
 
 //LINE 3 time and date
 const enterTimeValue = document.getElementById("enterTimeValue"); //the paragraph to show value
 const enterTime = document.getElementById("enterTime"); //the sliding input to assign time
 
-var timeEntered=true; //checking if time has been entered. this is set to true due to there being a default option. kept as safeguard
+var timeEntered = true; //checking if time has been entered. this is set to true due to there being a default option. kept as safeguard
 
 const enterDate = document.getElementById("enterDate"); //the calander interface, get value here
 
-var dateEntered=false; 
+var dateEntered = false; 
 
 //line 4 period number
 const enterPeriod = document.getElementById("enterPeriod");  //the textbox which shows what period it is currently
 
-var periodEntered=false;
+var periodEntered = false;
 
 //line 5: reason
 
@@ -89,7 +89,7 @@ var studentID;
 var studentName;
 var teacher;
 var teacherEmail;
-var timeNeeded;
+var timeNeeded = "5"; //default value, being a var makes it able of being overwritten so it's fine
 var dateForApplication;
 var periodOfLeave;
 var reasonOfLeave;
@@ -106,7 +106,7 @@ function SaveTeacher(){
 
     teacherEmail = enterTeacher.value; //the email of the teacher has been set as the value as it is correct-in-all-circumstances 
 
-    teacher=enterTeacher.options[enterTeacher.selectedIndex].text;  //whereas the way they are referred to may be informal. so they are set as the texts
+    teacher = enterTeacher.options[enterTeacher.selectedIndex].text;  //whereas the way they are referred to may be informal. so they are set as the texts
 
     teacherInputLocked = true;  //once save is pressed, the search button shouldn't assign values anymore
 
@@ -125,7 +125,7 @@ function SaveTeacher(){
     saveTeacher.style.backgroundColor = "grey"; //make the save button grey to signal the change to the user
     teacherEntered = true;  //the teacher has been entered, keep that information
 
-    console.log(teacher + " and "+teacherEmail) //debug testing
+    console.log(teacher + " and "+teacherEmail); //debug testing
 
     }
 }
@@ -144,9 +144,9 @@ function CancelTeacher(){  //when the red cross cancel button is pressed:
 
     teacherEmail = ""; //wipe clean
     teacher = ""; //wipe clean
-    teacherEntered=false; //the value has been cancelled, therefore the safeguard should be active again
+    teacherEntered = false; //the value has been cancelled, therefore the safeguard should be active again
 
-    console.log(teacher + " and "+teacherEmail) //debug testing
+    console.log(teacher + " and " + teacherEmail); //debug testing
 
 }
 
@@ -160,14 +160,16 @@ fetch("teacherNames.json")
             const dropdownBox = document.getElementById("enterTeacher");
 
             teachers.forEach(teacher=> {
-                const option = document.createElement("option");
-                option.value = teacher[1];
-                option.textContent = teacher[0];
-                dropdownBox.appendChild(option);
-            }
+                    
+                    const option = document.createElement("option");
+                    option.value = teacher[1];
+                    option.textContent = teacher[0];
+                    dropdownBox.appendChild(option);
 
+                }
             );
- });
+
+        });
 
 function SearchTeacher(){ //finding the value which is the closest to the thing searched
 
@@ -206,7 +208,7 @@ searchTeacher.oninput = SearchTeacher; //any changes in the textbox should allow
 function SaveStudent(){
 
     studentID = enterStudent.value; //set value 
-    console.log(studentID) //debug testing
+    console.log(studentID); //debug testing
 
     if (studentID == ""){ //if the user tries to press save without entering anything
 
@@ -268,11 +270,11 @@ function CancelStudent(){
     saveStudent.style.backgroundColor= "green"; //make the save button green once more
 
     showStudent.value = "Name to ID"; //show the default placeholder text in the student to id textbox
-    studentID=""; //wipe clean
+    studentID = ""; //wipe clean
 
-    console.log(studentID) //debug testing
+    console.log(studentID); //debug testing
     
-    studentEntered=false; //ensure that it submit won't be allowed when cancelling student input
+    studentEntered = false; //ensure that it submit won't be allowed when cancelling student input
 
 }
 
@@ -289,7 +291,7 @@ function EnterTimeChange(){
     enterTimeValue.innerHTML = `MAX 15 min, MIN 1 min:<br> ${time} minutes`; //update the texts shown with the actual number of minutes now
 
     timeNeeded = enterTime.value; //assign that value to the time needed
-    timeEntered=true; //time value has been assign, the time allows proceed in submission
+    timeEntered = true; //time value has been assign, the time allows proceed in submission
 
 }
 
@@ -308,7 +310,7 @@ function DateEntered(){
     }`;  //using that date object, mimic the format of that of the date input 
 
     enterDate.value = dateString; //assign this value to the date input
-
+    dateForApplication = dateString; //assign it to the variable that will be passing onto the database
     dateEntered = true; //the date has now been filled
 
 }
@@ -372,7 +374,7 @@ function UpdatePeriod(){
 
     else if (totalMinutes >= intervalStarts && totalMinutes <= intervalEnds){ //interval
         enterPeriod.value = "Interval";
-        periodOfLeave = "Null";
+        periodOfLeave = "null";
         console.log("Interval");
     }
 
@@ -392,7 +394,7 @@ function UpdatePeriod(){
 
     else if (totalMinutes >= lunchStarts && totalMinutes <= lunchEnds){ //lunch
         enterPeriod.value = "Lunch";
-        periodOfLeave = "Null";
+        periodOfLeave = "null";
         console.log("lunch");
     }
 
@@ -405,8 +407,8 @@ function UpdatePeriod(){
    
     else{ //put placeholder text
         enterPeriod.value = "School Closed";
-        periodOfLeave = "Null";
-        periodEntered = false;
+        periodOfLeave = "null";
+        periodEntered = true;  //CHANGE BACK TO FALSE AFTER THE AFTER SCHOOL TESTING IS FINISH
     }
     
     console.log (periodOfLeave);
@@ -475,16 +477,16 @@ function SaveReason(){
     
         if(reasonOfLeave == ""){ //even after setting value, if the user has entered nothing, fire a warning
             alert("Error: Please enter a valid reason");
-            reasonEntered=false;
+            reasonEntered = false;
         }
 
         else{ //the user has properly entered something, so just make the UI and checks align with those results.
 
-            enterReason.disabled=true; //disable changing choice
-            saveReason.disabled=true; //disable the save button
-            saveReason.style.backgroundColor= "grey"; //make the save button grey
+            enterReason.disabled = true; //disable changing choice
+            saveReason.disabled = true; //disable the save button
+            saveReason.style.backgroundColor = "grey"; //make the save button grey
 
-            reasonEntered=true;
+            reasonEntered = true;
 
         }
     }
@@ -506,7 +508,7 @@ function CancelReason(){
         reasonOfLeave = ""; //wipe clean
         reasonEntered = false; //the reason hasn't been entered
 
-        console.log(reasonOfLeave) //debug testing
+        console.log(reasonOfLeave); //debug testing
         
     } 
 }
@@ -518,7 +520,7 @@ async function Submission(){
     
     if(studentEntered && teacherEntered && dateEntered && timeEntered && periodEntered && reasonEntered){ //if everything has been entered correctly
 
-        const now=new Date();
+        const now = new Date();
         var timeOfApplication = now.toLocaleTimeString("en-GB", {
             timeZone: "Pacific/Auckland",
             hour12: false
@@ -537,13 +539,13 @@ async function Submission(){
 
     else{//if one of those variables are false, which means something hasn't been filled up correctly
 
-        alert('Please fill in all questions with valid answers and press "Save"');
+        alert('Error in sending the request. Please check if you have filled in all questions with valid answers and pressed "Save"');
         console.log("the error message should show");
 
     }
 }
 
-submission.onclick= Submission;
+submission.onclick = Submission;
 
 //HOME PAGE JS ENDS HERE
 
@@ -565,8 +567,8 @@ async function InputtingData(teachername, teacheremail, studentid, studentname, 
         reasonOfLeave:reasonofleave,
         timeOfApplication:timeofapplication,
         isApproved:isapproved,
-        reasonOfDecision: "None"
-        
+        reasonOfDecision: "None",
+        timeOfDecision: "Unattended"
     });
     
 }
