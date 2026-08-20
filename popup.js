@@ -110,6 +110,8 @@ function SaveTeacher(){
 
     teacherInputLocked = true;  //once save is pressed, the search button shouldn't assign values anymore
 
+    ResetSearch(); //when the save button is pressed, the left-over filtering effect of the search bar should be cleaned
+
     if (teacherEmail == "invalid"){ //if the student attempts to save when the option is on the default cue "choose teacher" hidden option
 
         alert("Error: Please choose a valid teacher to request permission");  
@@ -142,6 +144,9 @@ function CancelTeacher(){  //when the red cross cancel button is pressed:
     teacherInputLocked = false; //since the cancel button has been pressed, the user is looking for a teacher choice again. 
     //the search function is now allowed to automatically choose values close to the thing searched
 
+
+    ResetSearch(); //when the cancel button is pressed, the left-over filtering effect of the search bar should be cleaned
+    
     teacherEmail = ""; //wipe clean
     teacher = ""; //wipe clean
     teacherEntered = false; //the value has been cancelled, therefore the safeguard should be active again
@@ -201,6 +206,21 @@ function SearchTeacher(){ //finding the value which is the closest to the thing 
 
 searchTeacher.oninput = SearchTeacher; //any changes in the textbox should allow this function to be ran once
 
+//when the thing is saved, reset the hidden values to show everything
+function ResetSearch(){
+
+    for (const option of enterTeacher.options) {
+
+        if (option.value == "invalid"){
+            option.hidden = true; //ensure the placeholder thing doesn't become visible somehow
+        }
+
+        else{  //show everything else again
+            option.hidden = false;
+        }
+    }
+
+}
 
 //LINE 2:
 //save the student names
